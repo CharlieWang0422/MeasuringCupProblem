@@ -2,7 +2,7 @@
 using namespace std;
 
 vector<vector<int>> cup_record,path,cup_status;
-vector<int> cup_capicity , temporary_container1 , temporary_container2 , temporary_container3 , temporary_container4;
+vector<int> cup_capicity , temporary_container1 , temporary_container2 , temporary_container3 , temporary_container4 , temporary_container5;
 queue<vector<int>> cup_status_node;
 bool check;
 int cup_number , volume_record , target_water_volume , great_common_factor , step_pos ,pos_check, the_largest_water_volume = 0;
@@ -41,13 +41,13 @@ void write(){
 }
 
 void end(){
-	pos_check = 0;
+	// pos_check = 0;
 	path.push_back(temporary_container1);
 	for(x = 0 ; x < cup_number ; x++){
 		temporary_container3[x] = temporary_container1[x] - temporary_container1[x+cup_number];
-		pos_check += temporary_container3[x];
+		// pos_check += temporary_container3[x];
 	}
-	if(pos_check == 0){
+	if(temporary_container3 == temporary_container5){
 		path_display();
 		return;
 	}
@@ -97,6 +97,7 @@ int main(){
 		great_common_factor = __gcd(great_common_factor , cup_capicity[i]);
 		temporary_container3.push_back(0);
 		temporary_container4.push_back(0);
+		temporary_container5.push_back(0);
 	}
 	if(target_water_volume % great_common_factor != 0 || target_water_volume > the_largest_water_volume){
 		cout <<-1 ;
