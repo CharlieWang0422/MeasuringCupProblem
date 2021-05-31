@@ -11,7 +11,7 @@ int i , j , x;
 
 
 void path_display(){
-	for(unsigned int y = path.size()-1 ; y >= 0 ; y--){
+	for(int y = path.size()-1 ; y >= 0 ; y--){
 		for(x = 0 ; x < step_pos+1 ; x++){
 			cout << path[y][x] << " ";
 		}
