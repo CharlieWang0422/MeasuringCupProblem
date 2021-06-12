@@ -1,39 +1,40 @@
 #include<bits/stdc++.h>
+#include<unordered_set>
 using namespace std;
 
-vector<vector<int>> cup_record,path,cup_status,path_reverse,status,change,change_record;
-vector<int> cup_capicity , temporary_container1 , temporary_container2 , temporary_container3 , temporary_container4 , temporary_container5;
+vector<vector<int>> cup_record,path,cup_status;
+vector<int> cup_capicity , temporary_container1 , temporary_container2 , temporary_container3 , temporary_container4 , temporary_container5,record(3,-1);
 queue<vector<int>> cup_status_node;
-bool check;
-int cup_number , volume_record , target_water_volume , great_common_factor , step_pos ,pos_check, the_largest_water_volume = 0;
+int cup_number , volume_record , target_water_volume , great_common_factor , step_pos , the_largest_water_volume = 0;
 int i , j , x;
 
-// print out the result
-void printout(){
-	for(int  y = path.size()-1 ; y>=0 ; y--){
-		int t = 0;
-		int q = 0;
-		int s = 0;
-		cout << "(";
-		for(i = 0 ; i < cup_number ; i++){
-			cout << path[y][i] << " ";
-			if(path[y][i+cup_number] < 0){
-				t = path[y][i+cup_number];
-				q = i+1;
+
+
+void path_display(){
+	for(int y = path.size()-1 ; y >= 0 ; y--){
+		cout <<"(";
+		for(x = 0 ; x < cup_number ; x++){
+			cout << path[y][x] << ",";
+			if(path[y][x+cup_number] < 0){
+				record[0] = x+1;
+				record[2] = path[y][x+cup_number];
 			}
-			else if(path[y][i+cup_number]>0){
-				t = path[y][i+cup_number];
-				s = i+1;
+			else if(path[y][x+cup_number] > 0){
+				record[1] = x+1;
+				record[2] = path[y][x+cup_number];
 			}
 		}
-		cout << ")" ;
-		cout << q<<" "<<s<<" "<< t<<" "<<" step"<<path.size()-y<<"\n";
-		change_record.push_back({q,s,t});
+		cout << ")";
+		for(auto &c : record){
+			cout << c <<",";
+		}
+		cout <<"step"<<path.size()-y<< "\n";
+		record[0] =-1,record[1] = -1,record[2] = -1;
 	}
+	return;
 }
 
 
-//Confirm whether the target water volume appears
 bool CheckWaterVolume(){
 	for(x = 0 ; x < cup_number ; x++){
 		if(temporary_container1[x] == target_water_volume){
@@ -45,25 +46,28 @@ bool CheckWaterVolume(){
 }
 
 
-// Make a container to check if this method has been tried
+
 void write(){
 	for(x = 0 ; x < cup_number ; x++){
 		temporary_container3[x] = temporary_container1[x];
 	}
 	return;
 }
-// When the target water volume appears
+
 void end(){
+	// pos_check = 0;
 	path.push_back(temporary_container1);
 	for(x = 0 ; x < cup_number ; x++){
 		temporary_container3[x] = temporary_container1[x] - temporary_container1[x+cup_number];
+		// pos_check += temporary_container3[x];
 	}
 	if(temporary_container3 == temporary_container5){
-		printout();
+		path_display();
 		return;
 	}
 	for(unsigned int k = 0 ; k < cup_status.size() ; k++){
 		for(x = 0 ; x < step_pos+1 ; x++){
+			// cout << cup_status[k][i]<<" ";
 			temporary_container4[x] = cup_status[k][x];
 		}
 		if(temporary_container3 == temporary_container4){
@@ -72,11 +76,13 @@ void end(){
 			return;
 		}
 	}
+
 	return;
 }
-// check if this method has been tried
+
+
+
 void test(){
-	check = true;
 	for(unsigned int k = 0; k < cup_record.size();k++){
 		if(temporary_container3 == cup_record[k]){
 			goto place;
@@ -91,8 +97,6 @@ void test(){
 	return;
 }
 
-
-
 int main(){
 	cin >> cup_number;
 	for(i = 0 ; i < cup_number ; i++){
@@ -104,7 +108,6 @@ int main(){
 	great_common_factor = cup_capicity[0];
 	step_pos = cup_number * 2 ;
 	for(i = 0 ; i < cup_number ; i++){
-		// __gcd find the great common factor of two number
 		great_common_factor = __gcd(great_common_factor , cup_capicity[i]);
 		temporary_container3.push_back(0);
 		temporary_container4.push_back(0);
@@ -173,4 +176,3 @@ int main(){
 	cout<<-1;
 	return 0;
 }
-
